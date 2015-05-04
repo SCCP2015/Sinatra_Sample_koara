@@ -1,41 +1,24 @@
 # coding: utf-8
 require 'sinatra/base'
 require 'sinatra/reloader'
+require 'singleton'
 
 class MainApp < Sinatra::Base
+  include Singleton
   # Sinatra Auto Reload
   configure :development do
     register Sinatra::Reloader
   end
   get '/' do
-    if File.exist?('data')
-      File.read('data')
-    else
-      ''
-    end
+    Database.instance.read
   end
   post '/' do
-    body = request.body.gets + "/n"
-    if File.exist?('data')
-      data = File.read('data')
-      File.write('data', data + body)
-      data + body
-    else
-      File.write('data', body)
-      body
-    end
+    Database.instance.write(request.body.gets)
   end
   put '/' do
-    body = request.body.gets + "/n"
-    if File.exist?('data')
-       File.write('data', body)
-    else 
-     File.write('data', '')
-      ''
-    end
+    Database.instance.rewrite(request.body.gets)
   end
   delete '/' do
-    File.write('data', '')
-    ''
+    Database.instance.delete
   end
 end

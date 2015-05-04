@@ -4,32 +4,38 @@ require 'singleton'
 class Database < Sinatra::Base
   include Singleton
 
-  Def read
+  FILE = 'data'
+
+  def read
     if File.exist?(FILE)
       File.read(FILE)
     else
       ''
     end
+  end
 
-  Def write
-    body = request.body.gets + "/n"
+  def addwrite(body)
+    body = body + "/n"
     if File.exist?(FILE)
       read = File.read(FILE)
       File.write(FILE,read + body)
       read + body
     else
-      File.write(FILE,'')
-      ''
+      File.write(FILE,body)
+      body
     end
-  Def rewrite
-    body = request.body.gets + '/n'
+  end
+
+  def newwrite(body)
+    body = body + '/n'
     if File.exist?(FILE)
       File.write(FILE,body)
-    else
-      ''
+      body
     end
-  Def delete
+  end
+  
+  def delete
     File.write(FILE,'')
     ''
+  end
 end
-

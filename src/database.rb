@@ -1,7 +1,7 @@
 # coding utf-8
 require 'singleton'
 
-class Database < Sinatra::Base
+class Database 
   include Singleton
 
   FILE = 'data'
@@ -15,21 +15,21 @@ class Database < Sinatra::Base
   end
 
   def addwrite(body)
-    body = body + "/n"
+    newbody = body + "/n"
     if File.exist?(FILE)
       read = File.read(FILE)
-      File.write(FILE,read + body)
+      File.write(FILE,read + newbody)
       read + body
     else
-      File.write(FILE,body)
+      File.write(FILE,newbody)
       body
     end
   end
 
   def newwrite(body)
-    body = body + '/n'
+    newbody = body + '/n'
     if File.exist?(FILE)
-      File.write(FILE,body)
+      File.write(FILE,newbody)
       body
     end
   end

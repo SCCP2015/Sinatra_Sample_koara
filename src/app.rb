@@ -1,10 +1,9 @@
 # coding: utf-8
 require 'sinatra/base'
 require 'sinatra/reloader'
-require 'singleton'
+require_relative 'database'
 
 class MainApp < Sinatra::Base
-  include Singleton
   # Sinatra Auto Reload
   configure :development do
     register Sinatra::Reloader
@@ -13,10 +12,12 @@ class MainApp < Sinatra::Base
     Database.instance.read
   end
   post '/' do
-    Database.instance.write(request.body.gets)
+    body = request.body.gets
+    Database.instance.addwrite(body)
   end
   put '/' do
-    Database.instance.rewrite(request.body.gets)
+    body = request.body.gets
+    Database.instance.newwrite(body)
   end
   delete '/' do
     Database.instance.delete

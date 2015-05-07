@@ -27,10 +27,10 @@ describe 'Database.instance' do
     end
     context 'many POST' do
       it 'Write word next line' do
-        expect(Database.instance.write('hoge')).to eq "hoge/n"
+        expect(Database.instance.write('hoge')).to eq "hoge\n"
         expect(Database.instance.read).to eq "hoge/n"
-        expect(Database.instance.wirte('test')).to eq "hoge/ntest/n"
-        expect(Database.instance.read).to eq "hoge/ntest/n"
+        expect(Database.instance.wirte('test')).to eq "hoge/ntest\n"
+        expect(Database.instance.read).to eq "hoge/ntest\n"
       end
     end
   end
@@ -38,13 +38,13 @@ describe 'Database.instance' do
   describe 'update' do
     it 'rewrite' do
       File.delete('data') if File.exist?('data')
-      expect(Database.instance.rewrite('hoge')).to eq "hoge/n"
-      expect(Database.instance.read).to eq "hoge/n"
+      expect(Database.instance.rewrite('hoge')).to eq "hoge\n"
+      expect(Database.instance.read).to eq "hoge\n"
 
       Database.instance.write('hoge')
 
-      expect(Database.instance.rewrite('hoge')).to eq "hoge/n"
-      expect(Database.instance.read).to eq "hoge/n"
+      expect(Database.instance.rewrite('hoge')).to eq "hoge\n"
+      expect(Database.instance.read).to eq "hoge\n"
     end
   end
 

@@ -15,14 +15,19 @@ class MainApp < Sinatra::Base
   end
   
   get '/' do
+    @obj=Word.all
     erb:index
   end
 
   post '/' do
-    @obj = params[:twit]
-    redirect '/'
+  Word.create(msg: params[:twit])
+  @obj=Word.all
+  @obj.class.to_s
+  erb:index
+  redirect '/'
   end
 
+=begin
   put '/words/:id' do
     id = params[:id]
     word = Word.get(id)
@@ -43,5 +48,6 @@ class MainApp < Sinatra::Base
       word.destroy.to_s
     end
   end
+=end
 end
 

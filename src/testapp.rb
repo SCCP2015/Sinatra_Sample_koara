@@ -19,7 +19,7 @@ class MainApp < Sinatra::Base
   get ' /words' do
     json(Word.all)
   end
-  get '/words/:id' do
+  get '/words/:id' do           
     id params[:id]
     word = Word.get(id)
     if word.nil?

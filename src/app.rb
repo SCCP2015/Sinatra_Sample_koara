@@ -1,53 +1,61 @@
+# coding: utf-8
 require 'sinatra/base'
 require 'sinatra/reloader'
-require 'sinatra/json'
 require 'data_mapper'
 require_relative 'word'
 
-DataMapper::Logger.new($stdout,  :debug)
+DataMapper::Logger.new($stdout, :debug)
 DataMapper.setup(:default, 'postgres://vagrant:vagrant@localhost/myapp')
 
-
-# Main App
+# Sinatra Main controller
 class MainApp < Sinatra::Base
+  # Sinatra Auto Reload
   configure :development do
     register Sinatra::Reloader
   end
-
   get '/words' do
-    json(Word.all)
+    words = Word.all.map do |w|
+      w.id.to_s + ": #{w.msg}"
+    end
+    words.join(', ')
+  end
+
+  get '/index' do
+    @obj = {:title => "Hello"}
+    erb:index
   end
 
   get '/words/:id' do
     id = params[:id]
     word = Word.get(id)
     if word.nil?
-      json(error: "id:#{:id} is not found.")
+      "Record of id: #{id} is not found."
     else
-      json(word)
+      word.id.to_s + ": #{word.msg}"
     end
   end
   post '/words' do
-    Word.create(msg: request.body.gets).id.to_json
+    word = Word.create(msg: request.body.gets)
+    word.id.to_s
   end
   put '/words/:id' do
     id = params[:id]
     word = Word.get(id)
-    if word.nil? 
-      json(false)
+    if word.nil?
+      'false'
     else
       word.update(msg: request.body.gets)
-      json(true)
+      'true'
     end
   end
-  
   delete '/words/:id' do
     id = params[:id]
     word = Word.get(id)
-    if word.nil? 
-      json(false)
+    if word.nil?
+      'false'
     else
-      json(word.destroy)
+      word.destroy.to_s
     end
   end
 end
+

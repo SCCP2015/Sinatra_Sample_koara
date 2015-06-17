@@ -5,49 +5,35 @@ require 'data_mapper'
 require_relative 'word'
 
 DataMapper::Logger.new($stdout, :debug)
-DataMapper.setup(:default, 'postgres://vagrant:vagrant@localhost/myapp')
+  DataMapper.setup(:default, 'postgres://vagrant:vagrant@localhost/myapp')
 
 # Sinatra Main controller
 class MainApp < Sinatra::Base
-  # Sinatra Auto Reload
+# Sinatra Auto Reload
   configure :development do
-    register Sinatra::Reloader
+  register Sinatra::Reloader
   end
-  get '/words' do
-    words = Word.all.map do |w|
-      w.id.to_s + ": #{w.msg}"
-    end
-    words.join(', ')
-  end
-
-  get '/index' do
-    @obj = {:title => "Hello"}
+  
+  get '/' do
     erb:index
   end
 
-  get '/words/:id' do
-    id = params[:id]
-    word = Word.get(id)
-    if word.nil?
-      "Record of id: #{id} is not found."
-    else
-      word.id.to_s + ": #{word.msg}"
-    end
+  post '/' do
+    @obj = params[:twit]
+    redirect '/'
   end
-  post '/words' do
-    word = Word.create(msg: request.body.gets)
-    word.id.to_s
-  end
+
   put '/words/:id' do
     id = params[:id]
     word = Word.get(id)
     if word.nil?
       'false'
     else
-      word.update(msg: request.body.gets)
+    word.update(msg: request.body.gets)
       'true'
     end
   end
+
   delete '/words/:id' do
     id = params[:id]
     word = Word.get(id)

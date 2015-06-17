@@ -1,4 +1,3 @@
-=begin 
 # coding: utf-8
 require 'sinatra/base'
 require 'sinatra/json'
@@ -42,12 +41,5 @@ class MainApp < Sinatra::Base
       word.update(msg: request.body.gets)
       json(true)
     end
-  end
-end
-=end
-
-class Mainapp
-  get '/' do
-  "Hello,world!"
   end
 end

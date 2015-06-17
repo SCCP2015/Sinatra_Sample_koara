@@ -2,10 +2,10 @@ require 'data_mapper'
 
 # Model Class
 class Word
-    include DataMapper::Resource
+  include DataMapper::Resource
 
-    property :id, Serial
-    property :msg, String
+  property :id, Serial
+  property :msg, String
 end
 
 DataMapper.finalize

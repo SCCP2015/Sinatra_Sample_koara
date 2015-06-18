@@ -20,17 +20,31 @@
 </head>
 <body>
 <form method="post" action="/">
-<p>Your ID<br>
-<input type="text" name="id" size="8" value="@" maxlength="15"></p>
 <p>Type your tweet<br>
 <textarea name="twit" rows="5" cols="40"></textarea></p>
 <p><input type="submit" name="submit" value="Tweet">
 </form>
 <br>
 <br>
-<%= @obj.each do |tweet|%>
-<%= tweet[:msg].to_s%>
-<%= end %>
+<div class="container">
+  <table class="table table-striped">
+  <thead>
+  <tr>
+  <th>Username</th>
+  <th>Tweet</th>
+  </th>
+  </thead>
+  <tbody>
+  <td>UserName</td>
+  <td><% @obj.reverse_each do |tweet| %>
+      <%= tweet[:msg].to_s%>
+      <br>
+      <% end %>
+  </td>
+  </tr>
+  </tbody>
+  </table>
+  </div>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
